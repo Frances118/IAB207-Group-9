@@ -6,6 +6,19 @@
 {% block content %}
 
     <main>
+        <form action="{{ url_for('index_index.search_event') }}" method="post" class="mb-4">
+            {{ search_form.csrf_token }}
+            <div class="form-row align-items-center">
+                <div class="col-sm-2">
+                    {{ search_form.keyword(class="form-control form-control-lg", placeholder="Search event...") }}
+                </div>
+                <div class="col-auto">
+                    {{ search_form.submit(class="btn btn-primary btn-lg") }}
+                </div>
+            </div>
+        </form>
+
+
         <section id="What's On" class="whatson">
 
             {% if events|length > 0 %}
@@ -26,7 +39,7 @@
                                 <a href="/index/event/detail.html?id={{ event.id }}"
                                    style="text-decoration: none;">{{ event.eventName }}</a>
                             </h3>
-                            <p><i>{{ event.eventDate }}, at {{ timeZone }}</i></p>
+                            <p><i>{{ event.eventDate }}</i></p>
                             <p style="color:red;"><b>{{ event.location }}</b></p>
                             <p>Open</p>
                         </div>
@@ -59,7 +72,7 @@
                                 <a href="/index/event/detail.html?id={{ event.id }}"
                                    style="text-decoration: none;">{{ event.eventName }}</a>
                             </h3>
-                            <p><i>{{ event.eventDate }}, at {{ timeZone }}</i></p>
+                            <p><i>{{ event.eventDate }}</i></p>
                             <p style="color:red;"><b>{{ event.location }}</b></p>
                             <p>Open</p>
                         </div>
@@ -108,8 +121,10 @@
 
 
             <article>
+                <a href="mailto:allformusic@outlook.com">
                 <img src="https://play.tennis.com.au/Library/redheadtennisclub?command=Proxy&lang=en&type=Images&currentFolder=%2Fcoaching%2F&hash=665b8e01e64a6961a689712a1550ea064f49e224&fileName=contact-us-1908762__340.png"
                      alt="Contact Us" style="width:400px;height:300px;">
+                </a>
                 <div>
 
                 </div>
@@ -119,4 +134,3 @@
 
 
 {% endblock %}
-
