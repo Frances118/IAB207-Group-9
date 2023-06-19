@@ -52,8 +52,8 @@ def save():
                 'tags': form.tags.data,
                 'eventDate': form.eventDate.data.strftime('%m/%d/%Y'),
                 'content': form.content.data,
-                'startTime': form.startTime.data.strftime("%m/%d/%Y, %H:%M:%S"),
-                'endTime': form.endTime.data.strftime("%m/%d/%Y, %H:%M:%S"),
+                'startTime': form.startTime.data.strftime("%H:%M:%S"),
+                'endTime': form.endTime.data.strftime("%H:%M:%S"),
                 'timeZone': form.timeZone.data,
                 'language': form.language.data,
                 'locationType': form.locationType.data,
@@ -71,11 +71,13 @@ def save():
 
 
 @index_event.route('event/detail.html', methods=['GET', 'POST'])
-
 def detail():
     id = request.args.get("id")
     info = Concert.query.filter(Concert.id == id).first()
     commentform = CommentForm()
+    is_creator = False
+    if current_user.is_authenticated:
+        is_creator = current_user.id == info.user_id
 
     # get comments
     rows = Comment.query.filter(Comment.concert_id == id).all()
@@ -91,7 +93,7 @@ def detail():
             item['user'] = user.username
         comments.append(item)
     print(comments)
-    return render_template('event/detail.html', **{'info': info, 'comments': comments, 'commentform': commentform})
+    return render_template('event/detail.html', **{'info': info, 'comments': comments, 'commentform': commentform, "is_creator": is_creator})
 
 
 @index_event.route('/event/saveComment', methods=['POST'])
@@ -130,3 +132,12 @@ def book():
     msg = 'book success'
     ret = {"state": state, "msg": msg}
     return json.dumps(ret)
+
+
+@index_event.route("/event/delete-event", methods=["POST"])
+@login_required
+def deleteEvent():
+    event_id = request.form["event_id"]
+    delete = Concert.query.filter(Concert.id == event_id).delete()
+    db.session.commit()
+    return redirect("/index/index/index.html")

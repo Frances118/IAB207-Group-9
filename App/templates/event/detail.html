@@ -86,6 +86,11 @@
                 <p>
                     {{ info.content }}
                 </p>
+                {% if is_creator %}
+                <form action="/index/event/delete-event" method="post">
+                    <button class="btn btn-warning book" type="submit" name="event_id" value="{{ info.id }}">Delete Event</button>
+                </form>
+                {% endif %}
                 <br/>
                 <h4>Comments</h4>
                 <div>
