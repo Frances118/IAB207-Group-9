@@ -71,7 +71,7 @@ def save():
 
 
 @index_event.route('event/detail.html', methods=['GET', 'POST'])
-@login_required
+
 def detail():
     id = request.args.get("id")
     info = Concert.query.filter(Concert.id == id).first()
