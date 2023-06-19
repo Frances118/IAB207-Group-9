@@ -48,3 +48,10 @@ class EventForm(FlaskForm):
                                coerce=int)
     location = StringField('location', validators=[Length(1,255)], render_kw={'class':'form-control'}) 
     submit = SubmitField('Add a Event', render_kw={'class':'btn btn-primary w-25 login'})
+
+
+# this is the search form
+class SearchForm(FlaskForm):
+    keyword = StringField('Search Event Name', validators=[InputRequired()])
+    #submit button
+    submit = SubmitField('Search')
